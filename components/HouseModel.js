@@ -392,79 +392,60 @@ function Roof() {
       {/* ── FLAT ROOF SLABS ── */}
 
       {/* Main block flat roof slab (X=0→30, Z=0→26) */}
-      <mesh position={[15, 14.05, 13]} castShadow receiveShadow>
-        <boxGeometry args={[30.5, 0.1, 26.5]} />
+      <mesh position={[15, 10.04, 13]} castShadow receiveShadow>
+        <boxGeometry args={[30.5, 0.08, 26.5]} />
         <meshStandardMaterial color={roofColor} roughness={0.95} />
       </mesh>
 
       {/* Master bedroom wing flat roof slab (X=30→38, Z=0→13) */}
-      <mesh position={[34, 14.05, 6.5]} castShadow receiveShadow>
-        <boxGeometry args={[8.5, 0.1, 13.5]} />
+      <mesh position={[34, 10.04, 6.5]} castShadow receiveShadow>
+        <boxGeometry args={[8.5, 0.08, 13.5]} />
         <meshStandardMaterial color={roofColor} roughness={0.95} />
       </mesh>
 
-      {/* ── PARAPET WALLS (raised border around the flat roof) ── */}
-      {/* These sit on top of the flat slab, ~0.8 unit tall, matching wall color */}
+      {/* ── PARAPET WALLS (raised border that hides the roof) ── */}
+      {/* These sit on top of the flat slab, ~1 unit tall, matching wall color */}
 
       {/* Main block — Front parapet (Z=26) */}
-      <mesh position={[15, 14.5, 26.25]} castShadow>
-        <boxGeometry args={[30.5, 0.8, 0.5]} />
+      <mesh position={[15, 10.3, 26.25]} castShadow>
+        <boxGeometry args={[30.5, 0.5, 0.5]} />
         <meshStandardMaterial color={parapetColor} roughness={0.9} />
       </mesh>
       {/* Main block — Back parapet (Z=0) */}
-      <mesh position={[15, 14.5, -0.25]} castShadow>
-        <boxGeometry args={[30.5, 0.8, 0.5]} />
+      <mesh position={[15, 10.3, -0.25]} castShadow>
+        <boxGeometry args={[30.5, 0.5, 0.5]} />
         <meshStandardMaterial color={parapetColor} roughness={0.9} />
       </mesh>
       {/* Main block — Left parapet (X=0) */}
-      <mesh position={[-0.25, 14.5, 13]} castShadow>
-        <boxGeometry args={[0.5, 0.8, 26.5]} />
+      <mesh position={[-0.25, 10.3, 13]} castShadow>
+        <boxGeometry args={[0.5, 0.5, 26.5]} />
         <meshStandardMaterial color={parapetColor} roughness={0.9} />
       </mesh>
-      {/* Main block — Right parapet (X=30, Z=13→26) */}
-      <mesh position={[30.25, 14.5, 19.5]} castShadow>
-        <boxGeometry args={[0.5, 0.8, 13]} />
+      {/* Main block — Right parapet up to X=30, Z=0→26 but stopping at master wing */}
+      <mesh position={[30.25, 10.3, 19.5]} castShadow>
+        <boxGeometry args={[0.5, 0.5, 13]} />
         <meshStandardMaterial color={parapetColor} roughness={0.9} />
       </mesh>
 
       {/* Master wing — Right parapet (X=38) */}
-      <mesh position={[38.25, 14.5, 6.5]} castShadow>
-        <boxGeometry args={[0.5, 0.8, 13.5]} />
+      <mesh position={[38.25, 10.3, 6.5]} castShadow>
+        <boxGeometry args={[0.5, 0.5, 13.5]} />
         <meshStandardMaterial color={parapetColor} roughness={0.9} />
       </mesh>
       {/* Master wing — Back parapet (Z=0, X=30→38) */}
-      <mesh position={[34, 14.5, -0.25]} castShadow>
-        <boxGeometry args={[8.5, 0.8, 0.5]} />
+      <mesh position={[34, 10.3, -0.25]} castShadow>
+        <boxGeometry args={[8.5, 0.5, 0.5]} />
         <meshStandardMaterial color={parapetColor} roughness={0.9} />
       </mesh>
       {/* Master wing — Front parapet (Z=13, X=30→38) */}
-      <mesh position={[34, 14.5, 13.25]} castShadow>
-        <boxGeometry args={[8.5, 0.8, 0.5]} />
+      <mesh position={[34, 10.3, 13.25]} castShadow>
+        <boxGeometry args={[8.5, 0.5, 0.5]} />
         <meshStandardMaterial color={parapetColor} roughness={0.9} />
       </mesh>
-      {/* Master wing — Left parapet (X=30, Z=0→13) */}
-      <mesh position={[30.25, 14.5, 6.5]} castShadow>
-        <boxGeometry args={[0.5, 0.8, 13.5]} />
+      {/* Inner corner parapet fill (X=30, Z=13→26) */}
+      <mesh position={[30.25, 10.3, 19.5]} castShadow>
+        <boxGeometry args={[0.5, 0.5, 13]} />
         <meshStandardMaterial color={parapetColor} roughness={0.9} />
-      </mesh>
-
-      {/* ── ROOF EDGE OVERHANG TRIM (subtle drip edge) ── */}
-      {/* Thin dark trim line around the full roof perimeter — modern style */}
-      <mesh position={[15, 14.0, 26.5]}>
-        <boxGeometry args={[31, 0.12, 0.12]} />
-        <meshStandardMaterial color="#1a1a1a" roughness={0.8} metalness={0.3} />
-      </mesh>
-      <mesh position={[15, 14.0, -0.5]}>
-        <boxGeometry args={[31, 0.12, 0.12]} />
-        <meshStandardMaterial color="#1a1a1a" roughness={0.8} metalness={0.3} />
-      </mesh>
-      <mesh position={[-0.5, 14.0, 13]}>
-        <boxGeometry args={[0.12, 0.12, 27]} />
-        <meshStandardMaterial color="#1a1a1a" roughness={0.8} metalness={0.3} />
-      </mesh>
-      <mesh position={[38.5, 14.0, 6.5]}>
-        <boxGeometry args={[0.12, 0.12, 13.5]} />
-        <meshStandardMaterial color="#1a1a1a" roughness={0.8} metalness={0.3} />
       </mesh>
     </group>
   );
@@ -531,7 +512,7 @@ function LuxuryWallLamp({ position, rotationY = 0 }) {
 }
 
 // Helper component to draw a single wall with cutouts (windows/doors)
-function Wall({ start, end, height = 14, y = 0, thickness = 0.5, cutouts = [], color = "#f5f5f5", transparent = false, opacity = 1, isGlass = false }) {
+function Wall({ start, end, height = 10, y = 0, thickness = 0.5, cutouts = [], color = "#f5f5f5", transparent = false, opacity = 1, isGlass = false }) {
   const shapeInfo = useMemo(() => {
     const dx = end[0] - start[0];
     const dz = end[1] - start[1];
@@ -609,72 +590,75 @@ function Wall({ start, end, height = 14, y = 0, thickness = 0.5, cutouts = [], c
 
 export function HouseModel({ showRoof = false }) {
 
-  // Coordinates Grid: X: 0, 6, 10, 20, 24, 25, 38 | Z: 0, 7, 10, 13, 16, 26
+  // Coordinates Grid:
+  // X: 0, 6, 10, 20, 24, 25, 38
+  // Z: 0, 7, 10, 13, 16, 26
 
   const wallsData = [
     // --- TOP OUTER BOUNDARY (Z = 0) ---
-    { start: [0, 0], end: [10, 0], cutouts: [{ x: 3.5, width: 3, bottom: 4, height: 5, type: 'window' }] }, // Top-Left Room Window
+    { start: [0, 0], end: [10, 0], cutouts: [{ x: 3.5, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Top-Left Room Window
     { start: [10, 0], end: [20, 0], cutouts: [] }, // Kitchen (Solid Wall)
-    { start: [20, 0], end: [25, 0], cutouts: [{ x: 1.5, width: 2, bottom: 5, height: 4, type: 'window' }] }, // Toilet (Top) Window
-    { start: [25, 0], end: [38, 0], cutouts: [{ x: 5, width: 3, bottom: 4, height: 5, type: 'window' }] }, // Master Bedroom Window
+    { start: [20, 0], end: [25, 0], cutouts: [{ x: 1.5, width: 2, bottom: 4, height: 3, type: 'window' }] }, // Toilet (Top) Window
+    { start: [25, 0], end: [38, 0], cutouts: [{ x: 5, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Master Bedroom Window
 
     // --- LEFT OUTER BOUNDARY (X = 0) ---
-    { start: [0, 10], end: [0, 0], cutouts: [{ x: 3.5, width: 3, bottom: 4, height: 5, type: 'window' }] }, // Top-Left Room Left Window
-    { start: [0, 13], end: [0, 10], cutouts: [{ x: 0.5, width: 2, bottom: 5, height: 4, type: 'window' }] }, // Toilet 1 Left Window
-    { start: [0, 16], end: [0, 13], cutouts: [{ x: 0.5, width: 2, bottom: 5, height: 4, type: 'window' }] }, // Toilet 2 Left Window
-    { start: [0, 26], end: [0, 16], cutouts: [{ x: 3.5, width: 3, bottom: 4, height: 5, type: 'window' }] }, // Bottom-Left Room Left Window
+    { start: [0, 10], end: [0, 0], cutouts: [{ x: 3.5, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Top-Left Room Left Window
+    { start: [0, 13], end: [0, 10], cutouts: [{ x: 0.5, width: 2, bottom: 4, height: 3, type: 'window' }] }, // Toilet 1 Left Window
+    { start: [0, 16], end: [0, 13], cutouts: [{ x: 0.5, width: 2, bottom: 4, height: 3, type: 'window' }] }, // Toilet 2 Left Window
+    { start: [0, 26], end: [0, 16], cutouts: [{ x: 3.5, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Bottom-Left Room Left Window
 
     // --- BOTTOM OUTER BOUNDARY (Z = 26) ---
-    { start: [10, 26], end: [0, 26], cutouts: [{ x: 2, width: 2, bottom: 4, height: 5, type: 'window' }, { x: 6, width: 2, bottom: 4, height: 5, type: 'window' }] }, // Bottom-Left Room Windows (2)
+    { start: [10, 26], end: [0, 26], cutouts: [{ x: 2, width: 2, bottom: 3, height: 4, type: 'window' }, { x: 6, width: 2, bottom: 3, height: 4, type: 'window' }] }, // Bottom-Left Room Windows (2)
     {
       start: [24, 26],
       end: [10, 26],
       cutouts: [
-        { x: 1.5, width: 2, bottom: 4, height: 5, type: 'window' },
-        { x: 4.5, width: 2, bottom: 4, height: 5, type: 'window' },
-        { x: 7.5, width: 2, bottom: 4, height: 5, type: 'window' },
-        { x: 10.5, width: 2, bottom: 4, height: 5, type: 'window' }
+        { x: 1.5, width: 2, bottom: 3, height: 4, type: 'window' },
+        { x: 4.5, width: 2, bottom: 3, height: 4, type: 'window' },
+        { x: 7.5, width: 2, bottom: 3, height: 4, type: 'window' },
+        { x: 10.5, width: 2, bottom: 3, height: 4, type: 'window' }
       ]
     }, // Sitting Room Windows (4)
     { start: [30, 26], end: [24, 26], height: 3.5, color: "#cccccc" }, // Veranda low wall
-    { start: [30, 26], end: [24, 26], height: 10.5, y: 3.5, isGlass: true }, // Veranda glass wall above low wall
+    { start: [30, 26], end: [24, 26], height: 6.5, y: 3.5, isGlass: true }, // Veranda glass wall above low wall
 
     // --- RIGHT OUTER BOUNDARY ---
-    { start: [38, 0], end: [38, 13], cutouts: [{ x: 2, width: 3, bottom: 4, height: 5, type: 'window' }, { x: 8, width: 3, bottom: 4, height: 5, type: 'window' }] }, // Master Bed Right Windows (2)
-    { start: [30, 13], end: [38, 13], cutouts: [{ x: 5.5, width: 2, bottom: 4, height: 5, type: 'window' }] }, // Master Bed Bottom Outer Wall Window (1 window at corner, aligned)
-    { start: [30, 13], end: [30, 26], cutouts: [{ x: 1.5, width: 3, bottom: 0, height: 9, type: 'door', isEntrance: true }] }, // Veranda right wall (Door to outside)
+    { start: [38, 0], end: [38, 13], cutouts: [{ x: 2, width: 3, bottom: 3, height: 4, type: 'window' }, { x: 8, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Master Bed Right Windows (2)
+    { start: [30, 13], end: [38, 13], cutouts: [{ x: 5.5, width: 2, bottom: 3, height: 4, type: 'window' }] }, // Master Bed Bottom Outer Wall Window (1 window at corner, aligned)
+    { start: [30, 13], end: [30, 26], cutouts: [{ x: 1.5, width: 3, bottom: 0, height: 7, type: 'door', isEntrance: true }] }, // Veranda right wall (Door to outside)
 
     // --- INNER VERTICAL WALLS ---
     { start: [10, 0], end: [10, 10], cutouts: [] }, // Top-Left Room / Kitchen (Solid Wall)
-    { start: [10, 10], end: [10, 16], cutouts: [{ x: 3.5, width: 2.5, bottom: 0, height: 9, type: 'door' }] }, // Corridor → Sitting Room (Room 1 access)
+    { start: [10, 10], end: [10, 16], cutouts: [{ x: 3.5, width: 2.5, bottom: 0, height: 7, type: 'door' }] }, // Corridor → Sitting Room (Room 1 access)
     { start: [10, 16], end: [10, 26], cutouts: [] }, // Room 2 / Sitting Room (Solid Wall)
     { start: [6, 10], end: [6, 13], cutouts: [] }, // Toilet 1 / Lobby 1 (Solid Wall - no entrance)
     { start: [6, 13], end: [6, 16], cutouts: [] }, // Toilet 2 / Lobby 2 (Solid Wall - no entrance)
     { start: [0, 13], end: [6, 13], cutouts: [] }, // Toilet divider — splits Toilet 1 (Room 1) from Toilet 2 (Room 2)
 
     { start: [20, 0], end: [20, 7], cutouts: [] }, // Kitchen / Toilet (Top)
-    { start: [20, 7], end: [20, 13], cutouts: [{ x: 2, width: 3, bottom: 0, height: 9, type: 'door' }] }, // Kitchen / Lobby (Door)
-    { start: [24, 13], end: [24, 26], cutouts: [{ x: 1.5, width: 2, bottom: 4, height: 5, type: 'window' }, { x: 5, width: 2, bottom: 4, height: 5, type: 'window' }, { x: 9.5, width: 3, bottom: 0, height: 9, type: 'door', isEntrance: true }] }, // Sitting Room / Veranda Windows (2) + Door
-    { start: [25, 0], end: [25, 7], cutouts: [{ x: 2, width: 3, bottom: 0, height: 9, type: 'door' }] }, // Toilet / Master Bed (En-suite Door)
-    { start: [25, 7], end: [25, 13], cutouts: [{ x: 1.5, width: 3, bottom: 0, height: 9, type: 'door' }] }, // Lobby / Master Bed (Door)
+    { start: [20, 7], end: [20, 13], cutouts: [{ x: 2, width: 3, bottom: 0, height: 7, type: 'door' }] }, // Kitchen / Lobby (Door)
+    { start: [24, 13], end: [24, 26], cutouts: [{ x: 1.5, width: 2, bottom: 3, height: 4, type: 'window' }, { x: 5, width: 2, bottom: 3, height: 4, type: 'window' }, { x: 9.5, width: 3, bottom: 0, height: 7, type: 'door', isEntrance: true }] }, // Sitting Room / Veranda Windows (2) + Door
+    { start: [25, 0], end: [25, 7], cutouts: [{ x: 2, width: 3, bottom: 0, height: 7, type: 'door' }] }, // Toilet / Master Bed (En-suite Door)
+    { start: [25, 7], end: [25, 13], cutouts: [{ x: 1.5, width: 3, bottom: 0, height: 7, type: 'door' }] }, // Lobby / Master Bed (Door)
 
     // --- INNER HORIZONTAL WALLS ---
     {
       start: [0, 10], end: [10, 10], cutouts: [
-        { x: 1.5, width: 2.5, bottom: 0, height: 9, type: 'door', flipSwing: false }, // Room 1 → Toilet
-        { x: 6.5, width: 2.5, bottom: 0, height: 9, type: 'door', flipSwing: false }  // Room 1 → Corridor
+        { x: 1.5, width: 2.5, bottom: 0, height: 7, type: 'door', flipSwing: false }, // Room 1 → Toilet (swings into Room 1)
+        { x: 6.5, width: 2.5, bottom: 0, height: 7, type: 'door', flipSwing: false }  // Room 1 → Corridor (swings into Room 1)
       ]
     },
+    // Toilet divider removed — Toilet 1 & 2 merged into one combined space
     {
       start: [0, 16], end: [10, 16], cutouts: [
-        { x: 1.5, width: 2.5, bottom: 0, height: 9, type: 'door', flipSwing: true }, // Room 2 → Toilet
-        { x: 6.5, width: 2.5, bottom: 0, height: 9, type: 'door', flipSwing: true }  // Room 2 → Corridor
+        { x: 1.5, width: 2.5, bottom: 0, height: 7, type: 'door', flipSwing: true }, // Room 2 → Toilet (swings into Room 2)
+        { x: 6.5, width: 2.5, bottom: 0, height: 7, type: 'door', flipSwing: true }  // Room 2 → Corridor (swings into Room 2)
       ]
     },
 
     { start: [10, 13], end: [20, 13], cutouts: [] }, // Kitchen / Sitting Room (Solid Wall)
     { start: [20, 7], end: [25, 7], cutouts: [] }, // Toilet / Lobby (Solid Wall)
-    { start: [20, 13], end: [25, 13], cutouts: [{ x: 1, width: 3, bottom: 0, height: 9, type: 'door', isEntrance: true }] }, // Lobby / Veranda (Door to outside)
+    { start: [20, 13], end: [25, 13], cutouts: [{ x: 1, width: 3, bottom: 0, height: 7, type: 'door', isEntrance: true }] }, // Lobby / Veranda (Door to outside)
     { start: [25, 13], end: [30, 13], cutouts: [] }, // Master Bed bottom wall facing Veranda (Solid Wall)
   ];
 
@@ -711,40 +695,40 @@ export function HouseModel({ showRoof = false }) {
 
       {/* ── LUXURY EXTERIOR WALL LANTERNS ── */}
       {/* Bottom-left room — outside front wall (Z=26, X=0→10) — 1 lamp */}
-      <LuxuryWallLamp position={[5, 12, 26.6]} rotationY={Math.PI} />
+      <LuxuryWallLamp position={[5, 8.5, 26.6]} rotationY={Math.PI} />
       {/* Sitting room — outside front wall (Z=26, X=10→24) — 2 lamps between windows */}
       {[14, 21].map((x, i) => (
-        <LuxuryWallLamp key={`fs${i}`} position={[x, 12, 26.6]} rotationY={Math.PI} />
+        <LuxuryWallLamp key={`fs${i}`} position={[x, 8.5, 26.6]} rotationY={Math.PI} />
       ))}
       {/* Back wall (Z=0, X=0→38) — 4 lamps */}
       {[5, 15, 25, 35].map((x, i) => (
-        <LuxuryWallLamp key={`b${i}`} position={[x, 12, -0.3]} rotationY={0} />
+        <LuxuryWallLamp key={`b${i}`} position={[x, 8.5, -0.3]} rotationY={0} />
       ))}
       {/* Left wall (X=0, Z=0→26) — 3 lamps */}
       {[5, 13, 21].map((z, i) => (
-        <LuxuryWallLamp key={`l${i}`} position={[-0.3, 12, z]} rotationY={-Math.PI / 2} />
+        <LuxuryWallLamp key={`l${i}`} position={[-0.3, 8.5, z]} rotationY={-Math.PI / 2} />
       ))}
       {/* Right wall (X=38, Z=0→13) — 2 lamps */}
       {[4, 10].map((z, i) => (
-        <LuxuryWallLamp key={`r${i}`} position={[38.3, 12, z]} rotationY={Math.PI / 2} />
+        <LuxuryWallLamp key={`r${i}`} position={[38.3, 8.5, z]} rotationY={Math.PI / 2} />
       ))}
-      {/* Master bedroom bottom wall (Z=13, X=30→38) — 2 lamps */}
+      {/* Master bedroom bottom wall (Z=13, X=30→38) — 2 lamps — THIS WAS MISSING */}
       {[32, 36].map((x, i) => (
-        <LuxuryWallLamp key={`mb${i}`} position={[x, 12, 13.3]} rotationY={Math.PI} />
+        <LuxuryWallLamp key={`mb${i}`} position={[x, 8.5, 13.3]} rotationY={Math.PI} />
       ))}
       {/* Veranda right wall (X=30, Z=13→26) — 2 lamps */}
       {[17, 23].map((z, i) => (
-        <LuxuryWallLamp key={`v${i}`} position={[30.3, 12, z]} rotationY={Math.PI / 2} />
+        <LuxuryWallLamp key={`v${i}`} position={[30.3, 8.5, z]} rotationY={Math.PI / 2} />
       ))}
 
       {/* ── 6 STRATEGIC PERIMETER POINT LIGHTS (within GPU limit) ── */}
       {/* These illuminate the exterior walls — lamps glow visually via emissive */}
-      <pointLight position={[5, 11, 28]} intensity={30} distance={22} decay={2} color="#ffcc44" /> {/* Front-left */}
-      <pointLight position={[20, 11, 28]} intensity={30} distance={22} decay={2} color="#ffcc44" /> {/* Front-right */}
-      <pointLight position={[-3, 10, 10]} intensity={25} distance={20} decay={2} color="#ffcc44" /> {/* Left wall */}
-      <pointLight position={[-3, 10, 22]} intensity={25} distance={20} decay={2} color="#ffcc44" /> {/* Left wall bottom */}
-      <pointLight position={[40, 10, 6]} intensity={25} distance={20} decay={2} color="#ffcc44" /> {/* Right wall */}
-      <pointLight position={[20, 10, -3]} intensity={25} distance={20} decay={2} color="#ffcc44" /> {/* Back wall */}
+      <pointLight position={[5, 7, 28]} intensity={25} distance={18} decay={2} color="#ffcc44" /> {/* Front-left */}
+      <pointLight position={[20, 7, 28]} intensity={25} distance={18} decay={2} color="#ffcc44" /> {/* Front-right */}
+      <pointLight position={[-3, 7, 10]} intensity={20} distance={16} decay={2} color="#ffcc44" /> {/* Left wall */}
+      <pointLight position={[-3, 7, 22]} intensity={20} distance={16} decay={2} color="#ffcc44" /> {/* Left wall bottom */}
+      <pointLight position={[40, 7, 6]} intensity={20} distance={16} decay={2} color="#ffcc44" /> {/* Right wall */}
+      <pointLight position={[20, 7, -3]} intensity={20} distance={16} decay={2} color="#ffcc44" /> {/* Back wall */}
     </group>
   );
 }
