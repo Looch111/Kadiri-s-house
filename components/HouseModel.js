@@ -677,14 +677,14 @@ export function HouseModel({ showRoof = false }) {
       ))}
 
       {/* Kitchen Counter (3ft deep, 5ft wide, 3ft high) */}
-      <mesh position={[12.5, 1.5, 1.5]} castShadow receiveShadow>
+      <mesh position={[12.5, 1.5, 2.0]} castShadow receiveShadow>
         <boxGeometry args={[5, 3, 3]} />
         <meshStandardMaterial color="#dddddd" roughness={0.5} />
       </mesh>
 
       {/* Master Bathroom (En-Suite) Fixtures */}
-      <ShowerFixture position={[21.75, 0, 1.75]} />
-      <ToiletFixture position={[24.2, 0, 0.85]} rotation={[0, 0, 0]} />
+      <ShowerFixture position={[21.75, 0, 2.25]} />
+      <ToiletFixture position={[23.8, 0, 1.25]} rotation={[0, 0, 0]} />
       <VanityFixture position={[20.78, 0, 5.0]} rotation={[0, 0, 0]} />
 
       {/* Render Roof + Solar Panels when toggled on */}
