@@ -9,7 +9,7 @@ export function Scene({ showRoof }) {
   return (
     <Canvas
       shadows
-      camera={{ position: [0, 30, 40], fov: 50 }}
+      camera={{ position: [0, 40, 55], fov: 50 }}
       dpr={[1, 1.5]}         // Cap pixel ratio — big perf win on high-DPI screens
       performance={{ min: 0.5 }} // Allow adaptive quality drop under load
       gl={{ antialias: true, powerPreference: 'high-performance' }}
