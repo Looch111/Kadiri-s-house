@@ -9,7 +9,7 @@ import * as THREE from 'three';
 function Window3D({ width, height, thickness = 0.5 }) {
   const frameWidth = 0.15; // Frame border width
   const frameThickness = thickness + 0.1; // Slightly thicker than the wall for detail
-  
+
   return (
     <group>
       {/* Outer frame (4 border blocks) */}
@@ -37,13 +37,16 @@ function Window3D({ width, height, thickness = 0.5 }) {
       {/* Glass Pane */}
       <mesh position={[0, 0, 0]}>
         <boxGeometry args={[width - frameWidth * 2, height - frameWidth * 2, 0.05]} />
-        <meshStandardMaterial
-              color="#a3d8f8"
-              transparent
-              opacity={0.3}
-              roughness={0.05}
-              metalness={0.1}
-            />
+        <meshPhysicalMaterial
+          color="#a3d8f8"
+          transparent
+          opacity={0.35}
+          roughness={0.05}
+          metalness={0.1}
+          transmission={0.9}
+          thickness={0.1}
+          ior={1.5}
+        />
       </mesh>
     </group>
   );
@@ -57,7 +60,7 @@ function Door3D({ width, height, thickness = 0.5, isEntrance = false, flipSwing 
 
   const frameWidth = 0.15;
   const frameThickness = thickness + 0.05;
-  
+
   // Custom premium color palettes
   const frameColor = "#1a1a1a"; // Elegant Ebony frame
   const doorColor = isEntrance ? "#1c140e" : "#3d2314"; // Ebony-Oak for entry doors, Walnut for interior doors
@@ -77,19 +80,14 @@ function Door3D({ width, height, thickness = 0.5, isEntrance = false, flipSwing 
   // Target angle: open by 100 degrees (1.75 rad) or closed (0 rad)
   const targetRotation = isOpen ? (flipSwing ? -Math.PI / 1.8 : Math.PI / 1.8) : 0;
 
-  // Smooth rotation — only animate when not yet settled
+  // Smooth rotation animation
   useFrame(() => {
     if (doorRef.current) {
-      const diff = targetRotation - doorRef.current.rotation.y;
-      if (Math.abs(diff) > 0.001) {
-        doorRef.current.rotation.y = THREE.MathUtils.lerp(
-          doorRef.current.rotation.y,
-          targetRotation,
-          0.15
-        );
-      } else {
-        doorRef.current.rotation.y = targetRotation; // snap & stop
-      }
+      doorRef.current.rotation.y = THREE.MathUtils.lerp(
+        doorRef.current.rotation.y,
+        targetRotation,
+        0.15 // Animation speed factor
+      );
     }
   });
 
@@ -113,9 +111,9 @@ function Door3D({ width, height, thickness = 0.5, isEntrance = false, flipSwing 
       </mesh>
 
       {/* Door Leaf (hinged on the left, interactive) */}
-      <group 
+      <group
         ref={doorRef}
-        position={[-width / 2 + frameWidth, -frameWidth / 2, 0]} 
+        position={[-width / 2 + frameWidth, -frameWidth / 2, 0]}
         onClick={(e) => {
           e.stopPropagation();
           setIsOpen(!isOpen);
@@ -157,11 +155,13 @@ function Door3D({ width, height, thickness = 0.5, isEntrance = false, flipSwing 
         {isEntrance && (
           <mesh position={[panelWidth / 2, 0, 0.01]} castShadow>
             <boxGeometry args={[panelWidth - 0.3, panelHeight - 0.6, 0.05]} />
-            <meshStandardMaterial
+            <meshPhysicalMaterial
               color="#d0e8f8"
               transparent
-              opacity={0.3}
+              opacity={0.35}
               roughness={0.1}
+              transmission={0.8}
+              ior={1.5}
             />
           </mesh>
         )}
@@ -298,24 +298,24 @@ function ShowerFixture({ position }) {
       {/* Right Glass Panel */}
       <mesh position={[1.725, 4.5, 0]}>
         <boxGeometry args={[0.02, 9, 3.5]} />
-        <meshPhysicalMaterial 
-          color="#d0e8f8" 
-          transparent 
-          opacity={0.2} 
-          roughness={0.05} 
-          transmission={0.9} 
+        <meshPhysicalMaterial
+          color="#d0e8f8"
+          transparent
+          opacity={0.2}
+          roughness={0.05}
+          transmission={0.9}
           ior={1.5}
         />
       </mesh>
       {/* Bottom Glass Panel */}
       <mesh position={[0.75, 4.5, 1.725]}>
         <boxGeometry args={[2.0, 9, 0.02]} />
-        <meshPhysicalMaterial 
-          color="#d0e8f8" 
-          transparent 
-          opacity={0.2} 
-          roughness={0.05} 
-          transmission={0.9} 
+        <meshPhysicalMaterial
+          color="#d0e8f8"
+          transparent
+          opacity={0.2}
+          roughness={0.05}
+          transmission={0.9}
           ior={1.5}
         />
       </mesh>
@@ -517,7 +517,7 @@ function Wall({ start, end, height = 10, y = 0, thickness = 0.5, cutouts = [], c
     const dx = end[0] - start[0];
     const dz = end[1] - start[1];
     const length = Math.sqrt(dx * dx + dz * dz);
-    
+
     const angle = Math.atan2(-dz, dx);
 
     const s = new THREE.Shape();
@@ -548,24 +548,27 @@ function Wall({ start, end, height = 10, y = 0, thickness = 0.5, cutouts = [], c
       <mesh castShadow receiveShadow>
         <extrudeGeometry args={[shapeInfo.shape, extrudeSettings]} />
         {isGlass ? (
-        <meshStandardMaterial
-              color="#a3d8f8"
-              transparent
-              opacity={0.3}
-              roughness={0.05}
-              metalness={0.1}
-            />
+          <meshPhysicalMaterial
+            color="#a3d8f8"
+            transparent
+            opacity={0.3}
+            roughness={0.05}
+            metalness={0.1}
+            transmission={0.9}
+            thickness={0.1}
+            ior={1.5}
+          />
         ) : (
           <meshStandardMaterial color={color} roughness={0.9} transparent={transparent} opacity={opacity} />
         )}
       </mesh>
-      
+
       {/* Render 3D objects in the cutout holes */}
       {cutouts.map((cutout, idx) => {
         const cx = cutout.x + cutout.width / 2;
         const cy = cutout.bottom + cutout.height / 2;
         const cz = thickness / 2;
-        
+
         if (cutout.type === 'window') {
           return (
             <group key={idx} position={[cx, cy, cz]}>
@@ -585,79 +588,74 @@ function Wall({ start, end, height = 10, y = 0, thickness = 0.5, cutouts = [], c
   );
 }
 
-// Corner post to seal gaps where walls meet
-function CornerPost({ x, z, height = 10, y = 0, size = 0.52 }) {
-  return (
-    <mesh position={[x, y + height / 2, z]}>
-      <boxGeometry args={[size, height, size]} />
-      <meshStandardMaterial color="#f0ede8" roughness={0.9} />
-    </mesh>
-  );
-}
-
 export function HouseModel({ showRoof = false }) {
 
   // Coordinates Grid:
   // X: 0, 6, 10, 20, 24, 25, 38
   // Z: 0, 7, 10, 13, 16, 26
-  
+
   const wallsData = [
     // --- TOP OUTER BOUNDARY (Z = 0) ---
     { start: [0, 0], end: [10, 0], cutouts: [{ x: 3.5, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Top-Left Room Window
     { start: [10, 0], end: [20, 0], cutouts: [] }, // Kitchen (Solid Wall)
     { start: [20, 0], end: [25, 0], cutouts: [{ x: 1.5, width: 2, bottom: 4, height: 3, type: 'window' }] }, // Toilet (Top) Window
     { start: [25, 0], end: [38, 0], cutouts: [{ x: 5, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Master Bedroom Window
-    
+
     // --- LEFT OUTER BOUNDARY (X = 0) ---
     { start: [0, 0], end: [0, 10], cutouts: [{ x: 3.5, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Top-Left Room Left Window
     { start: [0, 10], end: [0, 13], cutouts: [{ x: 0.5, width: 2, bottom: 4, height: 3, type: 'window' }] }, // Toilet 1 Left Window
     { start: [0, 13], end: [0, 16], cutouts: [{ x: 0.5, width: 2, bottom: 4, height: 3, type: 'window' }] }, // Toilet 2 Left Window
     { start: [0, 16], end: [0, 26], cutouts: [{ x: 3.5, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Bottom-Left Room Left Window
-    
+
     // --- BOTTOM OUTER BOUNDARY (Z = 26) ---
     { start: [0, 26], end: [10, 26], cutouts: [{ x: 2, width: 2, bottom: 3, height: 4, type: 'window' }, { x: 6, width: 2, bottom: 3, height: 4, type: 'window' }] }, // Bottom-Left Room Windows (2)
-    { 
-      start: [10, 26], 
-      end: [24, 26], 
+    {
+      start: [10, 26],
+      end: [24, 26],
       cutouts: [
         { x: 1.5, width: 2, bottom: 3, height: 4, type: 'window' },
         { x: 4.5, width: 2, bottom: 3, height: 4, type: 'window' },
         { x: 7.5, width: 2, bottom: 3, height: 4, type: 'window' },
         { x: 10.5, width: 2, bottom: 3, height: 4, type: 'window' }
-      ] 
+      ]
     }, // Sitting Room Windows (4)
     { start: [24, 26], end: [30, 26], height: 3.5, color: "#cccccc" }, // Veranda low wall
     { start: [24, 26], end: [30, 26], height: 6.5, y: 3.5, isGlass: true }, // Veranda glass wall above low wall
-    
+
     // --- RIGHT OUTER BOUNDARY ---
     { start: [38, 0], end: [38, 13], cutouts: [{ x: 2, width: 3, bottom: 3, height: 4, type: 'window' }, { x: 8, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Master Bed Right Windows (2)
     { start: [38, 13], end: [30, 13], cutouts: [{ x: 0.5, width: 2, bottom: 3, height: 4, type: 'window' }] }, // Master Bed Bottom Outer Wall Window (1 window at corner)
     { start: [30, 13], end: [30, 26], cutouts: [{ x: 1.5, width: 3, bottom: 0, height: 7, type: 'door', isEntrance: true }] }, // Veranda right wall (Door to outside)
- 
+
     // --- INNER VERTICAL WALLS ---
     { start: [10, 0], end: [10, 10], cutouts: [] }, // Top-Left Room / Kitchen (Solid Wall)
     { start: [10, 10], end: [10, 16], cutouts: [{ x: 3.5, width: 2.5, bottom: 0, height: 7, type: 'door' }] }, // Corridor → Sitting Room (Room 1 access)
     { start: [10, 16], end: [10, 26], cutouts: [] }, // Room 2 / Sitting Room (Solid Wall)
     { start: [6, 10], end: [6, 13], cutouts: [] }, // Toilet 1 / Lobby 1 (Solid Wall - no entrance)
     { start: [6, 13], end: [6, 16], cutouts: [] }, // Toilet 2 / Lobby 2 (Solid Wall - no entrance)
-    
+    { start: [0, 13], end: [6, 13], cutouts: [] }, // Toilet divider — splits Toilet 1 (Room 1) from Toilet 2 (Room 2)
+
     { start: [20, 0], end: [20, 7], cutouts: [] }, // Kitchen / Toilet (Top)
-    { start: [20, 7], end: [20, 13], cutouts: [{ x: 2, width: 3, bottom: 0, height: 7, type: 'door', flipSwing: true }] }, // Kitchen / Lobby (Door - swings into Kitchen)
+    { start: [20, 7], end: [20, 13], cutouts: [{ x: 2, width: 3, bottom: 0, height: 7, type: 'door' }] }, // Kitchen / Lobby (Door)
     { start: [24, 13], end: [24, 26], cutouts: [{ x: 1.5, width: 2, bottom: 3, height: 4, type: 'window' }, { x: 5, width: 2, bottom: 3, height: 4, type: 'window' }, { x: 9.5, width: 3, bottom: 0, height: 7, type: 'door', isEntrance: true }] }, // Sitting Room / Veranda Windows (2) + Door
     { start: [25, 0], end: [25, 7], cutouts: [{ x: 2, width: 3, bottom: 0, height: 7, type: 'door' }] }, // Toilet / Master Bed (En-suite Door)
     { start: [25, 7], end: [25, 13], cutouts: [{ x: 1.5, width: 3, bottom: 0, height: 7, type: 'door' }] }, // Lobby / Master Bed (Door)
- 
+
     // --- INNER HORIZONTAL WALLS ---
-    { start: [0, 10], end: [10, 10], cutouts: [
-      { x: 1.5, width: 2.5, bottom: 0, height: 7, type: 'door', flipSwing: false }, // Room 1 → Toilet (swings into Room 1)
-      { x: 6.5, width: 2.5, bottom: 0, height: 7, type: 'door', flipSwing: false }  // Room 1 → Corridor (swings into Room 1)
-    ] },
+    {
+      start: [0, 10], end: [10, 10], cutouts: [
+        { x: 1.5, width: 2.5, bottom: 0, height: 7, type: 'door', flipSwing: false }, // Room 1 → Toilet (swings into Room 1)
+        { x: 6.5, width: 2.5, bottom: 0, height: 7, type: 'door', flipSwing: false }  // Room 1 → Corridor (swings into Room 1)
+      ]
+    },
     // Toilet divider removed — Toilet 1 & 2 merged into one combined space
-    { start: [0, 16], end: [10, 16], cutouts: [
-      { x: 1.5, width: 2.5, bottom: 0, height: 7, type: 'door', flipSwing: true }, // Room 2 → Toilet (swings into Room 2)
-      { x: 6.5, width: 2.5, bottom: 0, height: 7, type: 'door', flipSwing: true }  // Room 2 → Corridor (swings into Room 2)
-    ] },
-    
+    {
+      start: [0, 16], end: [10, 16], cutouts: [
+        { x: 1.5, width: 2.5, bottom: 0, height: 7, type: 'door', flipSwing: true }, // Room 2 → Toilet (swings into Room 2)
+        { x: 6.5, width: 2.5, bottom: 0, height: 7, type: 'door', flipSwing: true }  // Room 2 → Corridor (swings into Room 2)
+      ]
+    },
+
     { start: [10, 13], end: [20, 13], cutouts: [] }, // Kitchen / Sitting Room (Solid Wall)
     { start: [20, 7], end: [25, 7], cutouts: [] }, // Toilet / Lobby (Solid Wall)
     { start: [20, 13], end: [25, 13], cutouts: [{ x: 1, width: 3, bottom: 0, height: 7, type: 'door', isEntrance: true }] }, // Lobby / Veranda (Door to outside)
@@ -677,40 +675,6 @@ export function HouseModel({ showRoof = false }) {
       {wallsData.map((data, index) => (
         <Wall key={index} {...data} />
       ))}
-
-      {/* ── CORNER POSTS — seal all wall junction gaps ── */}
-      {/* Outer perimeter corners */}
-      <CornerPost x={0}  z={0}  />
-      <CornerPost x={10} z={0}  />
-      <CornerPost x={20} z={0}  />
-      <CornerPost x={25} z={0}  />
-      <CornerPost x={38} z={0}  />
-      <CornerPost x={0}  z={26} />
-      <CornerPost x={10} z={26} />
-      <CornerPost x={24} z={26} />
-      <CornerPost x={30} z={26} />
-      <CornerPost x={38} z={13} />
-      <CornerPost x={30} z={13} />
-
-      {/* Left wall junctions */}
-      <CornerPost x={0}  z={10} />
-      <CornerPost x={0}  z={13} />
-      <CornerPost x={0}  z={16} />
-
-      {/* Toilet / lobby wall junctions */}
-      <CornerPost x={6}  z={10} />
-      <CornerPost x={6}  z={13} />
-      <CornerPost x={6}  z={16} />
-      <CornerPost x={10} z={10} />
-      <CornerPost x={10} z={13} />
-      <CornerPost x={10} z={16} />
-
-      {/* Kitchen / lobby area junctions */}
-      <CornerPost x={20} z={7}  />
-      <CornerPost x={20} z={13} />
-      <CornerPost x={24} z={13} />
-      <CornerPost x={25} z={7}  />
-      <CornerPost x={25} z={13} />
 
       {/* Kitchen Counter (3ft deep, 5ft wide, 3ft high) */}
       <mesh position={[12.5, 1.5, 1.5]} castShadow receiveShadow>
@@ -759,12 +723,12 @@ export function HouseModel({ showRoof = false }) {
 
       {/* ── 6 STRATEGIC PERIMETER POINT LIGHTS (within GPU limit) ── */}
       {/* These illuminate the exterior walls — lamps glow visually via emissive */}
-      <pointLight position={[5,   7, 28]}  intensity={25} distance={18} decay={2} color="#ffcc44" /> {/* Front-left */}
-      <pointLight position={[20,  7, 28]}  intensity={25} distance={18} decay={2} color="#ffcc44" /> {/* Front-right */}
-      <pointLight position={[-3,  7, 10]}  intensity={20} distance={16} decay={2} color="#ffcc44" /> {/* Left wall */}
-      <pointLight position={[-3,  7, 22]}  intensity={20} distance={16} decay={2} color="#ffcc44" /> {/* Left wall bottom */}
-      <pointLight position={[40,  7,  6]}  intensity={20} distance={16} decay={2} color="#ffcc44" /> {/* Right wall */}
-      <pointLight position={[20,  7, -3]}  intensity={20} distance={16} decay={2} color="#ffcc44" /> {/* Back wall */}
+      <pointLight position={[5, 7, 28]} intensity={25} distance={18} decay={2} color="#ffcc44" /> {/* Front-left */}
+      <pointLight position={[20, 7, 28]} intensity={25} distance={18} decay={2} color="#ffcc44" /> {/* Front-right */}
+      <pointLight position={[-3, 7, 10]} intensity={20} distance={16} decay={2} color="#ffcc44" /> {/* Left wall */}
+      <pointLight position={[-3, 7, 22]} intensity={20} distance={16} decay={2} color="#ffcc44" /> {/* Left wall bottom */}
+      <pointLight position={[40, 7, 6]} intensity={20} distance={16} decay={2} color="#ffcc44" /> {/* Right wall */}
+      <pointLight position={[20, 7, -3]} intensity={20} distance={16} decay={2} color="#ffcc44" /> {/* Back wall */}
     </group>
   );
 }
