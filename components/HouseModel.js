@@ -392,60 +392,79 @@ function Roof() {
       {/* ── FLAT ROOF SLABS ── */}
 
       {/* Main block flat roof slab (X=0→30, Z=0→26) */}
-      <mesh position={[15, 10.04, 13]} castShadow receiveShadow>
-        <boxGeometry args={[30.5, 0.08, 26.5]} />
+      <mesh position={[15, 14.05, 13]} castShadow receiveShadow>
+        <boxGeometry args={[30.5, 0.1, 26.5]} />
         <meshStandardMaterial color={roofColor} roughness={0.95} />
       </mesh>
 
       {/* Master bedroom wing flat roof slab (X=30→38, Z=0→13) */}
-      <mesh position={[34, 10.04, 6.5]} castShadow receiveShadow>
-        <boxGeometry args={[8.5, 0.08, 13.5]} />
+      <mesh position={[34, 14.05, 6.5]} castShadow receiveShadow>
+        <boxGeometry args={[8.5, 0.1, 13.5]} />
         <meshStandardMaterial color={roofColor} roughness={0.95} />
       </mesh>
 
-      {/* ── PARAPET WALLS (raised border that hides the roof) ── */}
-      {/* These sit on top of the flat slab, ~1 unit tall, matching wall color */}
+      {/* ── PARAPET WALLS (raised border around the flat roof) ── */}
+      {/* These sit on top of the flat slab, ~0.8 unit tall, matching wall color */}
 
       {/* Main block — Front parapet (Z=26) */}
-      <mesh position={[15, 10.3, 26.25]} castShadow>
-        <boxGeometry args={[30.5, 0.5, 0.5]} />
+      <mesh position={[15, 14.5, 26.25]} castShadow>
+        <boxGeometry args={[30.5, 0.8, 0.5]} />
         <meshStandardMaterial color={parapetColor} roughness={0.9} />
       </mesh>
       {/* Main block — Back parapet (Z=0) */}
-      <mesh position={[15, 10.3, -0.25]} castShadow>
-        <boxGeometry args={[30.5, 0.5, 0.5]} />
+      <mesh position={[15, 14.5, -0.25]} castShadow>
+        <boxGeometry args={[30.5, 0.8, 0.5]} />
         <meshStandardMaterial color={parapetColor} roughness={0.9} />
       </mesh>
       {/* Main block — Left parapet (X=0) */}
-      <mesh position={[-0.25, 10.3, 13]} castShadow>
-        <boxGeometry args={[0.5, 0.5, 26.5]} />
+      <mesh position={[-0.25, 14.5, 13]} castShadow>
+        <boxGeometry args={[0.5, 0.8, 26.5]} />
         <meshStandardMaterial color={parapetColor} roughness={0.9} />
       </mesh>
-      {/* Main block — Right parapet up to X=30, Z=0→26 but stopping at master wing */}
-      <mesh position={[30.25, 10.3, 19.5]} castShadow>
-        <boxGeometry args={[0.5, 0.5, 13]} />
+      {/* Main block — Right parapet (X=30, Z=13→26) */}
+      <mesh position={[30.25, 14.5, 19.5]} castShadow>
+        <boxGeometry args={[0.5, 0.8, 13]} />
         <meshStandardMaterial color={parapetColor} roughness={0.9} />
       </mesh>
 
       {/* Master wing — Right parapet (X=38) */}
-      <mesh position={[38.25, 10.3, 6.5]} castShadow>
-        <boxGeometry args={[0.5, 0.5, 13.5]} />
+      <mesh position={[38.25, 14.5, 6.5]} castShadow>
+        <boxGeometry args={[0.5, 0.8, 13.5]} />
         <meshStandardMaterial color={parapetColor} roughness={0.9} />
       </mesh>
       {/* Master wing — Back parapet (Z=0, X=30→38) */}
-      <mesh position={[34, 10.3, -0.25]} castShadow>
-        <boxGeometry args={[8.5, 0.5, 0.5]} />
+      <mesh position={[34, 14.5, -0.25]} castShadow>
+        <boxGeometry args={[8.5, 0.8, 0.5]} />
         <meshStandardMaterial color={parapetColor} roughness={0.9} />
       </mesh>
       {/* Master wing — Front parapet (Z=13, X=30→38) */}
-      <mesh position={[34, 10.3, 13.25]} castShadow>
-        <boxGeometry args={[8.5, 0.5, 0.5]} />
+      <mesh position={[34, 14.5, 13.25]} castShadow>
+        <boxGeometry args={[8.5, 0.8, 0.5]} />
         <meshStandardMaterial color={parapetColor} roughness={0.9} />
       </mesh>
-      {/* Inner corner parapet fill (X=30, Z=13→26) */}
-      <mesh position={[30.25, 10.3, 19.5]} castShadow>
-        <boxGeometry args={[0.5, 0.5, 13]} />
+      {/* Master wing — Left parapet (X=30, Z=0→13) */}
+      <mesh position={[30.25, 14.5, 6.5]} castShadow>
+        <boxGeometry args={[0.5, 0.8, 13.5]} />
         <meshStandardMaterial color={parapetColor} roughness={0.9} />
+      </mesh>
+
+      {/* ── ROOF EDGE OVERHANG TRIM (subtle drip edge) ── */}
+      {/* Thin dark trim line around the full roof perimeter — modern style */}
+      <mesh position={[15, 14.0, 26.5]}>
+        <boxGeometry args={[31, 0.12, 0.12]} />
+        <meshStandardMaterial color="#1a1a1a" roughness={0.8} metalness={0.3} />
+      </mesh>
+      <mesh position={[15, 14.0, -0.5]}>
+        <boxGeometry args={[31, 0.12, 0.12]} />
+        <meshStandardMaterial color="#1a1a1a" roughness={0.8} metalness={0.3} />
+      </mesh>
+      <mesh position={[-0.5, 14.0, 13]}>
+        <boxGeometry args={[0.12, 0.12, 27]} />
+        <meshStandardMaterial color="#1a1a1a" roughness={0.8} metalness={0.3} />
+      </mesh>
+      <mesh position={[38.5, 14.0, 6.5]}>
+        <boxGeometry args={[0.12, 0.12, 13.5]} />
+        <meshStandardMaterial color="#1a1a1a" roughness={0.8} metalness={0.3} />
       </mesh>
     </group>
   );
