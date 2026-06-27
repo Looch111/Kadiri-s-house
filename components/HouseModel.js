@@ -37,16 +37,13 @@ function Window3D({ width, height, thickness = 0.5 }) {
       {/* Glass Pane */}
       <mesh position={[0, 0, 0]}>
         <boxGeometry args={[width - frameWidth * 2, height - frameWidth * 2, 0.05]} />
-        <meshPhysicalMaterial 
-          color="#a3d8f8" 
-          transparent 
-          opacity={0.35} 
-          roughness={0.05} 
-          metalness={0.1}
-          transmission={0.9} 
-          thickness={0.1}
-          ior={1.5}
-        />
+        <meshStandardMaterial
+              color="#a3d8f8"
+              transparent
+              opacity={0.3}
+              roughness={0.05}
+              metalness={0.1}
+            />
       </mesh>
     </group>
   );
@@ -80,14 +77,19 @@ function Door3D({ width, height, thickness = 0.5, isEntrance = false, flipSwing 
   // Target angle: open by 100 degrees (1.75 rad) or closed (0 rad)
   const targetRotation = isOpen ? (flipSwing ? -Math.PI / 1.8 : Math.PI / 1.8) : 0;
 
-  // Smooth rotation animation
+  // Smooth rotation — only animate when not yet settled
   useFrame(() => {
     if (doorRef.current) {
-      doorRef.current.rotation.y = THREE.MathUtils.lerp(
-        doorRef.current.rotation.y,
-        targetRotation,
-        0.15 // Animation speed factor
-      );
+      const diff = targetRotation - doorRef.current.rotation.y;
+      if (Math.abs(diff) > 0.001) {
+        doorRef.current.rotation.y = THREE.MathUtils.lerp(
+          doorRef.current.rotation.y,
+          targetRotation,
+          0.15
+        );
+      } else {
+        doorRef.current.rotation.y = targetRotation; // snap & stop
+      }
     }
   });
 
@@ -155,13 +157,11 @@ function Door3D({ width, height, thickness = 0.5, isEntrance = false, flipSwing 
         {isEntrance && (
           <mesh position={[panelWidth / 2, 0, 0.01]} castShadow>
             <boxGeometry args={[panelWidth - 0.3, panelHeight - 0.6, 0.05]} />
-            <meshPhysicalMaterial 
-              color="#d0e8f8" 
-              transparent 
-              opacity={0.35} 
+            <meshStandardMaterial
+              color="#d0e8f8"
+              transparent
+              opacity={0.3}
               roughness={0.1}
-              transmission={0.8} 
-              ior={1.5}
             />
           </mesh>
         )}
@@ -548,16 +548,13 @@ function Wall({ start, end, height = 10, y = 0, thickness = 0.5, cutouts = [], c
       <mesh castShadow receiveShadow>
         <extrudeGeometry args={[shapeInfo.shape, extrudeSettings]} />
         {isGlass ? (
-          <meshPhysicalMaterial 
-            color="#a3d8f8" 
-            transparent 
-            opacity={0.3} 
-            roughness={0.05} 
-            metalness={0.1}
-            transmission={0.9} 
-            thickness={0.1}
-            ior={1.5}
-          />
+        <meshStandardMaterial
+              color="#a3d8f8"
+              transparent
+              opacity={0.3}
+              roughness={0.05}
+              metalness={0.1}
+            />
         ) : (
           <meshStandardMaterial color={color} roughness={0.9} transparent={transparent} opacity={opacity} />
         )}
@@ -585,6 +582,16 @@ function Wall({ start, end, height = 10, y = 0, thickness = 0.5, cutouts = [], c
         return null;
       })}
     </group>
+  );
+}
+
+// Corner post to seal gaps where walls meet
+function CornerPost({ x, z, height = 10, y = 0, size = 0.52 }) {
+  return (
+    <mesh position={[x, y + height / 2, z]}>
+      <boxGeometry args={[size, height, size]} />
+      <meshStandardMaterial color="#f0ede8" roughness={0.9} />
+    </mesh>
   );
 }
 
@@ -670,6 +677,40 @@ export function HouseModel({ showRoof = false }) {
       {wallsData.map((data, index) => (
         <Wall key={index} {...data} />
       ))}
+
+      {/* ── CORNER POSTS — seal all wall junction gaps ── */}
+      {/* Outer perimeter corners */}
+      <CornerPost x={0}  z={0}  />
+      <CornerPost x={10} z={0}  />
+      <CornerPost x={20} z={0}  />
+      <CornerPost x={25} z={0}  />
+      <CornerPost x={38} z={0}  />
+      <CornerPost x={0}  z={26} />
+      <CornerPost x={10} z={26} />
+      <CornerPost x={24} z={26} />
+      <CornerPost x={30} z={26} />
+      <CornerPost x={38} z={13} />
+      <CornerPost x={30} z={13} />
+
+      {/* Left wall junctions */}
+      <CornerPost x={0}  z={10} />
+      <CornerPost x={0}  z={13} />
+      <CornerPost x={0}  z={16} />
+
+      {/* Toilet / lobby wall junctions */}
+      <CornerPost x={6}  z={10} />
+      <CornerPost x={6}  z={13} />
+      <CornerPost x={6}  z={16} />
+      <CornerPost x={10} z={10} />
+      <CornerPost x={10} z={13} />
+      <CornerPost x={10} z={16} />
+
+      {/* Kitchen / lobby area junctions */}
+      <CornerPost x={20} z={7}  />
+      <CornerPost x={20} z={13} />
+      <CornerPost x={24} z={13} />
+      <CornerPost x={25} z={7}  />
+      <CornerPost x={25} z={13} />
 
       {/* Kitchen Counter (3ft deep, 5ft wide, 3ft high) */}
       <mesh position={[12.5, 1.5, 1.5]} castShadow receiveShadow>

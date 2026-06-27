@@ -19,7 +19,7 @@ export default function Home() {
         {/* Top-left: Title card */}
         <div className="absolute top-6 left-6 pointer-events-auto">
           <div className="bg-black/50 backdrop-blur-md border border-white/20 px-5 py-4 rounded-2xl shadow-xl">
-            <h1 className="text-xl font-bold text-white tracking-tight">🏠 Kadiri's House</h1>
+            <h1 className="text-xl font-bold text-white tracking-tight">🏠 Kadiri&apos;s House</h1>
             <p className="text-xs text-neutral-400 mt-1">Professional Floor Plan Visualization</p>
           </div>
         </div>
