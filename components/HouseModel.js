@@ -624,7 +624,7 @@ export function HouseModel({ showRoof = false }) {
 
     // --- RIGHT OUTER BOUNDARY ---
     { start: [38, 0], end: [38, 13], cutouts: [{ x: 2, width: 3, bottom: 3, height: 4, type: 'window' }, { x: 8, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Master Bed Right Windows (2)
-    { start: [38, 13], end: [30, 13], cutouts: [{ x: 0.5, width: 2, bottom: 3, height: 4, type: 'window' }] }, // Master Bed Bottom Outer Wall Window (1 window at corner)
+    { start: [30, 13], end: [38, 13], cutouts: [{ x: 5.5, width: 2, bottom: 3, height: 4, type: 'window' }] }, // Master Bed Bottom Outer Wall Window (1 window at corner, aligned)
     { start: [30, 13], end: [30, 26], cutouts: [{ x: 1.5, width: 3, bottom: 0, height: 7, type: 'door', isEntrance: true }] }, // Veranda right wall (Door to outside)
 
     // --- INNER VERTICAL WALLS ---
