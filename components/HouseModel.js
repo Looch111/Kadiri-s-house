@@ -53,7 +53,7 @@ function Window3D({ width, height, thickness = 0.5 }) {
 }
 
 // Luxurious 3D Door Component with custom paneling, vertical handles, glass panel options, and interactive open/close
-function Door3D({ width, height, thickness = 0.5, isEntrance = false }) {
+function Door3D({ width, height, thickness = 0.5, isEntrance = false, flipSwing = false }) {
   const [isOpen, setIsOpen] = useState(false);
   const [hovered, setHovered] = useState(false);
   const doorRef = useRef();
@@ -78,7 +78,7 @@ function Door3D({ width, height, thickness = 0.5, isEntrance = false }) {
   }, [hovered]);
 
   // Target angle: open by 100 degrees (1.75 rad) or closed (0 rad)
-  const targetRotation = isOpen ? Math.PI / 1.8 : 0;
+  const targetRotation = isOpen ? (flipSwing ? -Math.PI / 1.8 : Math.PI / 1.8) : 0;
 
   // Smooth rotation animation
   useFrame(() => {
@@ -578,7 +578,7 @@ function Wall({ start, end, height = 10, y = 0, thickness = 0.5, cutouts = [], c
         } else if (cutout.type === 'door') {
           return (
             <group key={idx} position={[cx, cy, cz]}>
-              <Door3D width={cutout.width} height={cutout.height} thickness={thickness} isEntrance={cutout.isEntrance} />
+              <Door3D width={cutout.width} height={cutout.height} thickness={thickness} isEntrance={cutout.isEntrance} flipSwing={cutout.flipSwing} />
             </group>
           );
         }
@@ -629,22 +629,27 @@ export function HouseModel({ showRoof = false }) {
  
     // --- INNER VERTICAL WALLS ---
     { start: [10, 0], end: [10, 10], cutouts: [] }, // Top-Left Room / Kitchen (Solid Wall)
-    { start: [10, 10], end: [10, 16], cutouts: [] }, // Rooms / Kitchen (Solid wall separating Kitchen from room extensions)
-    { start: [10, 16], end: [10, 26], cutouts: [] }, // Bottom-Left Room / Sitting Room (Solid Wall)
-    { start: [6, 10], end: [6, 13], cutouts: [{ x: 0.5, width: 2, bottom: 0, height: 7, type: 'door' }] }, // Toilet 1 / Lobby 1 (Door to toilet)
-    { start: [6, 13], end: [6, 16], cutouts: [{ x: 0.5, width: 2, bottom: 0, height: 7, type: 'door' }] }, // Toilet 2 / Lobby 2 (Door to toilet)
+    { start: [10, 10], end: [10, 16], cutouts: [{ x: 3.5, width: 2.5, bottom: 0, height: 7, type: 'door' }] }, // Corridor → Sitting Room (Room 1 access)
+    { start: [10, 16], end: [10, 26], cutouts: [] }, // Room 2 / Sitting Room (Solid Wall)
+    { start: [6, 10], end: [6, 13], cutouts: [] }, // Toilet 1 / Lobby 1 (Solid Wall - no entrance)
+    { start: [6, 13], end: [6, 16], cutouts: [] }, // Toilet 2 / Lobby 2 (Solid Wall - no entrance)
     
     { start: [20, 0], end: [20, 7], cutouts: [] }, // Kitchen / Toilet (Top)
-    { start: [20, 7], end: [20, 13], cutouts: [{ x: 2, width: 3, bottom: 0, height: 7, type: 'door' }] }, // Kitchen / Lobby (Door)
+    { start: [20, 7], end: [20, 13], cutouts: [{ x: 2, width: 3, bottom: 0, height: 7, type: 'door', flipSwing: true }] }, // Kitchen / Lobby (Door - swings into Kitchen)
     { start: [24, 13], end: [24, 26], cutouts: [{ x: 1.5, width: 2, bottom: 3, height: 4, type: 'window' }, { x: 5, width: 2, bottom: 3, height: 4, type: 'window' }, { x: 9.5, width: 3, bottom: 0, height: 7, type: 'door', isEntrance: true }] }, // Sitting Room / Veranda Windows (2) + Door
     { start: [25, 0], end: [25, 7], cutouts: [{ x: 2, width: 3, bottom: 0, height: 7, type: 'door' }] }, // Toilet / Master Bed (En-suite Door)
     { start: [25, 7], end: [25, 13], cutouts: [{ x: 1.5, width: 3, bottom: 0, height: 7, type: 'door' }] }, // Lobby / Master Bed (Door)
  
     // --- INNER HORIZONTAL WALLS ---
-    { start: [0, 10], end: [10, 10], cutouts: [] }, // Top-Left Room / Toilet 1 & Lobby (Solid Wall)
-    { start: [0, 13], end: [6, 13], cutouts: [] }, // Toilet 1 / Toilet 2 Divider
-    { start: [6, 13], end: [10, 13], cutouts: [] }, // Lobby 1 / Lobby 2 Divider (Solid Wall)
-    { start: [0, 16], end: [10, 16], cutouts: [] }, // Toilet 2 & Lobby / Bottom-Left Room (Solid Wall)
+    { start: [0, 10], end: [10, 10], cutouts: [
+      { x: 1.5, width: 2.5, bottom: 0, height: 7, type: 'door', flipSwing: false }, // Room 1 → Toilet (swings into Room 1)
+      { x: 6.5, width: 2.5, bottom: 0, height: 7, type: 'door', flipSwing: false }  // Room 1 → Corridor (swings into Room 1)
+    ] },
+    // Toilet divider removed — Toilet 1 & 2 merged into one combined space
+    { start: [0, 16], end: [10, 16], cutouts: [
+      { x: 1.5, width: 2.5, bottom: 0, height: 7, type: 'door', flipSwing: true }, // Room 2 → Toilet (swings into Room 2)
+      { x: 6.5, width: 2.5, bottom: 0, height: 7, type: 'door', flipSwing: true }  // Room 2 → Corridor (swings into Room 2)
+    ] },
     
     { start: [10, 13], end: [20, 13], cutouts: [] }, // Kitchen / Sitting Room (Solid Wall)
     { start: [20, 7], end: [25, 7], cutouts: [] }, // Toilet / Lobby (Solid Wall)
