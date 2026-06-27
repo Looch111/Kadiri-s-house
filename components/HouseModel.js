@@ -602,16 +602,16 @@ export function HouseModel({ showRoof = false }) {
     { start: [25, 0], end: [38, 0], cutouts: [{ x: 5, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Master Bedroom Window
 
     // --- LEFT OUTER BOUNDARY (X = 0) ---
-    { start: [0, 0], end: [0, 10], cutouts: [{ x: 3.5, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Top-Left Room Left Window
-    { start: [0, 10], end: [0, 13], cutouts: [{ x: 0.5, width: 2, bottom: 4, height: 3, type: 'window' }] }, // Toilet 1 Left Window
-    { start: [0, 13], end: [0, 16], cutouts: [{ x: 0.5, width: 2, bottom: 4, height: 3, type: 'window' }] }, // Toilet 2 Left Window
-    { start: [0, 16], end: [0, 26], cutouts: [{ x: 3.5, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Bottom-Left Room Left Window
+    { start: [0, 10], end: [0, 0], cutouts: [{ x: 3.5, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Top-Left Room Left Window
+    { start: [0, 13], end: [0, 10], cutouts: [{ x: 0.5, width: 2, bottom: 4, height: 3, type: 'window' }] }, // Toilet 1 Left Window
+    { start: [0, 16], end: [0, 13], cutouts: [{ x: 0.5, width: 2, bottom: 4, height: 3, type: 'window' }] }, // Toilet 2 Left Window
+    { start: [0, 26], end: [0, 16], cutouts: [{ x: 3.5, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Bottom-Left Room Left Window
 
     // --- BOTTOM OUTER BOUNDARY (Z = 26) ---
-    { start: [0, 26], end: [10, 26], cutouts: [{ x: 2, width: 2, bottom: 3, height: 4, type: 'window' }, { x: 6, width: 2, bottom: 3, height: 4, type: 'window' }] }, // Bottom-Left Room Windows (2)
+    { start: [10, 26], end: [0, 26], cutouts: [{ x: 2, width: 2, bottom: 3, height: 4, type: 'window' }, { x: 6, width: 2, bottom: 3, height: 4, type: 'window' }] }, // Bottom-Left Room Windows (2)
     {
-      start: [10, 26],
-      end: [24, 26],
+      start: [24, 26],
+      end: [10, 26],
       cutouts: [
         { x: 1.5, width: 2, bottom: 3, height: 4, type: 'window' },
         { x: 4.5, width: 2, bottom: 3, height: 4, type: 'window' },
@@ -619,8 +619,8 @@ export function HouseModel({ showRoof = false }) {
         { x: 10.5, width: 2, bottom: 3, height: 4, type: 'window' }
       ]
     }, // Sitting Room Windows (4)
-    { start: [24, 26], end: [30, 26], height: 3.5, color: "#cccccc" }, // Veranda low wall
-    { start: [24, 26], end: [30, 26], height: 6.5, y: 3.5, isGlass: true }, // Veranda glass wall above low wall
+    { start: [30, 26], end: [24, 26], height: 3.5, color: "#cccccc" }, // Veranda low wall
+    { start: [30, 26], end: [24, 26], height: 6.5, y: 3.5, isGlass: true }, // Veranda glass wall above low wall
 
     // --- RIGHT OUTER BOUNDARY ---
     { start: [38, 0], end: [38, 13], cutouts: [{ x: 2, width: 3, bottom: 3, height: 4, type: 'window' }, { x: 8, width: 3, bottom: 3, height: 4, type: 'window' }] }, // Master Bed Right Windows (2)
